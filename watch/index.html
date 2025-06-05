@@ -2,15 +2,11 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>複数ソースの動画再生</title>
 </head>
 <body>
-  <h1>動画再生ページ</h1>
-
   <video id="player" controls width="640" height="360">
     お使いのブラウザは video タグをサポートしていません。
   </video>
-
   <script>
     const params = new URLSearchParams(window.location.search);
     const videoId = params.get("v");
@@ -36,6 +32,16 @@
       video.load();
     } else {
       document.body.innerHTML += "<p style='color:red;'>動画IDが指定されていません。</p>";
+    }
+  </script>
+  <script>
+    if (window !== window.parent) {
+      // iframe内に埋め込まれている場合
+      const video = document.getElementById("player");
+
+      // <body> の内容を全て削除して video のみ追加
+      document.body.innerHTML = "";
+      document.body.appendChild(video);
     }
   </script>
 </body>
