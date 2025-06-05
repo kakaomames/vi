@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>複数ソースの動画再生</title>
+</head>
+<body>
+  <h1>動画再生ページ</h1>
+
+  <video id="player" controls width="640" height="360">
+    お使いのブラウザは video タグをサポートしていません。
+  </video>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const videoId = params.get("v");
+
+    if (videoId) {
+      const video = document.getElementById("player");
+
+      // 同じ .mp4 の動画を異なる外部ホストから取得
+      const hosts = [
+        "https://inv-us4-c.nadeko.net/latest_version?id=",
+        "https://inv-us2-c.nadeko.net/latest_version?id=",
+        "https://inv-ca1-c.nadeko.net/latest_version?id=",
+        "https://inv-eu3-c.nadeko.net/latest_version?id="
+      ];
+
+      hosts.forEach(host => {
+        const source = document.createElement("source");
+        source.src = `${host}${videoId}&itag=18&check=`;
+        source.type = "video/mp4";
+        video.appendChild(source);
+      });
+
+      video.load();
+    } else {
+      document.body.innerHTML += "<p style='color:red;'>動画IDが指定されていません。</p>";
+    }
+  </script>
+</body>
+</html>
